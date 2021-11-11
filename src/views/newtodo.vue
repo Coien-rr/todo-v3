@@ -27,12 +27,15 @@
 </template>
 
 <script>
-import { computed, reactive } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 import { todoStore } from '../store/todo';
 
 export default {
   setup(){
     const TaskList = todoStore();
+    onMounted(() => {
+      TaskList.initialTodoList();
+    })
     const todolist = computed(() => {
       return TaskList.unfinishedTodos
     });
