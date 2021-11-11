@@ -5,7 +5,8 @@ export default createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/todo'
+      // redirect: '/todo'
+      redirect: '/newtodo'
     },
     {
       path: '/todo',
