@@ -3,18 +3,18 @@
     <div class="z-10 w-px-todo-width h-px-todo-height p-5 pl-7 rounded-xl bg-white mx-auto">
       <header class="text-3xl font-semibold mb-5 mt-2">Todo App</header>
       <div class="flex inputFiled">
-        <input class="m-auto pl-2 focus:outline-none focus:ring focus:border-blue-300 rounded h-11 w-10/12 border-gray-400 border" type="text" placeholder="Add your new todo!">
-        <button class="ml-2 h-11 w-14 bg-green-500 rounded text-2xl text-white"><i class="fas fa-plus"></i></button>
+        <input v-model="newTodo" class="m-auto pl-2 focus:outline-none focus:ring focus:border-blue-300 rounded h-11 w-10/12 border-gray-400 border" type="text" placeholder="Add your new todo!">
+        <button @click="addTodo(newTodo)" class="ml-2 h-11 w-14 bg-green-500 rounded text-2xl text-white"><i class="fas fa-plus"></i></button>
       </div>
       <ul class="todolist mt-5 h-px-max-height max-h-px-max-height overflow-y-scroll">
         <li v-for="todo in todolist" :key="todo.id" class="flex pl-3 my-3 rounded h-10 leading-10 w-full bg-todoitem text-xl">
-          <input type="checkbox" v-model="todo.isFinished" class="appearance-none my-auto mr-3 h-5 w-5 border border-gray-300 rounded-md checked:bg-check bg-16 bg-no-repeat bg-center">
+          <input type="checkbox" v-model="todo.isFinished" @click="checkClick(todo.id)" class="appearance-none my-auto mr-3 h-5 w-5 border border-gray-300 rounded-md checked:bg-check bg-16 bg-no-repeat bg-center">
           {{todo.text}}
         </li>
       </ul>
       <ul class="donelist mt-5 h-px-max-height max-h-px-max-height overflow-y-scroll border-dashed border-t-2  border-blue-500">
         <li v-for="done in donelist" :key="done.id" class="flex pl-3 my-3 rounded h-10 leading-10 w-full bg-todoitem text-xl bg-gradient-to-r from-done">
-          <input type="checkbox" v-model="done.isFinished" class="appearance-none my-auto mr-3 h-5 w-5 border border-gray-300 rounded-md checked:bg-check checked:border-blue-500 bg-16 bg-no-repeat bg-center">
+          <input type="checkbox" v-model="done.isFinished" @click="checkClick(done.id)" class="appearance-none my-auto mr-3 h-5 w-5 border border-gray-300 rounded-md checked:bg-check checked:border-blue-500 bg-16 bg-no-repeat bg-center">
           {{done.text}}
         </li>
       </ul>
@@ -27,11 +27,12 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { todoStore } from '../store/todo';
 
 export default {
   setup(){
+    const newTodo = ref('');
     const TaskList = todoStore();
     onMounted(() => {
       TaskList.initialTodoList();
@@ -42,9 +43,21 @@ export default {
     const donelist = computed(() => {
       return TaskList.finishedTodos
     })
+    function addTodo(text){
+      return TaskList.addTodoTask(text);
+    }
+
+    function checkClick(id){
+      // console.log(todo);
+      return TaskList.changeTodoTask(id);
+    }
+
     return {
+      newTodo,
       todolist,
-      donelist
+      donelist,
+      addTodo,
+      checkClick
     }
   }
 }

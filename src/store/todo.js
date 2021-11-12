@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import { getTaskList } from "../utils/todolist";
-// const getTaskAPI = 'https://qcsy9b.fn.thelarkcloud.com/getTaskList';
+import { getTaskList, addTodoTask, updateTodoTask } from "../utils/todolist";
 export const todoStore = defineStore('todos', {
   state: ()=>({
     todos: [],
@@ -24,33 +23,29 @@ export const todoStore = defineStore('todos', {
     },
   },
   actions: {
-    addTodoTask(text){
-      this.todos.push({text, id: this.nextId++, isFinished: false});
-    },
-
     initialTodoList(){
       this.todos = [];
-      getTaskList().then( res => {
+      const heoo = 'Hello! Server!';
+      getTaskList(heoo).then( res => {
         console.log(res.data.todolist);
         let tasklist = res.data.todolist;
         for(let i = 0; i < tasklist.length; ++i){
           this.todos.push(tasklist[i]);
         }
-        this.nextId = tasklist[tasklist.length - 1].id + 1;
+        this.nextId = tasklist.length + 1;
         console.log(this.nextId);
       })
-      // axios({
-      //   method: 'post',
-      //   url: getTaskAPI,
-      // }).then(res => {
-      //   console.log(res.data.todolist);
-      //   let tasklist = res.data.todolist;
-      //   for(let i = 0; i < tasklist.length; i++){
-      //     this.todos.push(tasklist[i]);
-      //   }
-      //   this.nextId = tasklist[tasklist.length-1].id + 1;
-      //   console.log(this.nextId);
-      // })
+    },
+
+    addTodoTask(text){
+      this.todos.push({text, id: this.nextId++, isFinished: false});
+      addTodoTask(this.todos[this.nextId-2]);
+    },
+
+    changeTodoTask(todoId){
+      console.log('call!');
+      updateTodoTask(todoId).then(res => console.log(res));
     }
+
   }
 })
