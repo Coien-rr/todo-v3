@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-const getTaskAPI = 'https://qcsy9b.fn.thelarkcloud.com/getTaskList';
+import { getTaskList } from "../utils/todolist";
+// const getTaskAPI = 'https://qcsy9b.fn.thelarkcloud.com/getTaskList';
 export const todoStore = defineStore('todos', {
   state: ()=>({
     todos: [],
@@ -30,18 +30,27 @@ export const todoStore = defineStore('todos', {
 
     initialTodoList(){
       this.todos = [];
-      axios({
-        method: 'post',
-        url: getTaskAPI,
-      }).then(res => {
+      getTaskList().then( res => {
         console.log(res.data.todolist);
         let tasklist = res.data.todolist;
-        for(let i = 0; i < tasklist.length; i++){
+        for(let i = 0; i < tasklist.length; ++i){
           this.todos.push(tasklist[i]);
         }
-        this.nextId = tasklist[tasklist.length-1].id + 1;
+        this.nextId = tasklist[tasklist.length - 1].id + 1;
         console.log(this.nextId);
       })
+      // axios({
+      //   method: 'post',
+      //   url: getTaskAPI,
+      // }).then(res => {
+      //   console.log(res.data.todolist);
+      //   let tasklist = res.data.todolist;
+      //   for(let i = 0; i < tasklist.length; i++){
+      //     this.todos.push(tasklist[i]);
+      //   }
+      //   this.nextId = tasklist[tasklist.length-1].id + 1;
+      //   console.log(this.nextId);
+      // })
     }
   }
 })
