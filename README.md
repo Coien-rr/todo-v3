@@ -6,8 +6,12 @@
 
 初始化
 
-`yarn`
+```sh
+yarn
+```
 
 运行
 
-`yarn dev`
+```sh
+yarn dev
+```
