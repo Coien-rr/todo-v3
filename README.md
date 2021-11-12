@@ -1,6 +1,6 @@
 # todo-v3
 
-## 一个简单的入门Vue3小项目
+## 一个简单的入门Vue3-vite小项目
 
 引入了Tainwildcss Pinia axios 包管理器使用了yarn
 
