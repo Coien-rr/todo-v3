@@ -23,3 +23,10 @@ export function updateTodoTask(id){
 		data: id
 	})
 }
+
+export function callCleanAllTaskAPI(){
+	return myAxios({
+		url:'/cleanAllTask',
+		method: 'post',
+	})
+}

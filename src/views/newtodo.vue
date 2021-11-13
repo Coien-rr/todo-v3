@@ -20,7 +20,7 @@
       </ul>
       <div class="footer flex items-center mt-10">
         <span class="text-lg font-medium">You have {{todolist.length}} pending tasks</span>
-        <button class="ml-5 h-10 w-24 rounded-md text-base font-medium text-white bg-red-500">CleanAll</button>
+        <button @click="cleanAll()" class="ml-5 h-10 w-24 rounded-md text-base font-medium text-white bg-red-500">CleanAll</button>
       </div>
     </div>
   </div>
@@ -32,7 +32,7 @@ import { todoStore } from '../store/todo';
 
 export default {
   setup(){
-    const newTodo = ref('');
+    let newTodo = ref('');
     const TaskList = todoStore();
     onMounted(() => {
       TaskList.initialTodoList();
@@ -43,12 +43,18 @@ export default {
     const donelist = computed(() => {
       return TaskList.finishedTodos
     })
+
     function addTodo(text){
-      return TaskList.addTodoTask(text);
+      TaskList.addTodoTask(text);
+      newTodo.value = '';
+    }
+
+    function cleanAll(){
+      // console.log('cleanAll');
+      return TaskList.cleanAllTask();
     }
 
     function checkClick(id){
-      // console.log(todo);
       return TaskList.changeTodoTask(id);
     }
 
@@ -57,6 +63,7 @@ export default {
       todolist,
       donelist,
       addTodo,
+      cleanAll,
       checkClick
     }
   }

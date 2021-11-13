@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getTaskList, addTodoTask, updateTodoTask } from "../utils/todolist";
+import { getTaskList, addTodoTask, updateTodoTask, callCleanAllTaskAPI } from "../utils/todolist";
 export const todoStore = defineStore('todos', {
   state: ()=>({
     todos: [],
@@ -45,6 +45,12 @@ export const todoStore = defineStore('todos', {
     changeTodoTask(todoId){
       console.log('call!');
       updateTodoTask(todoId).then(res => console.log(res));
+    },
+
+    cleanAllTask(){
+      console.log("callCleanAllTaskAPI!");
+      callCleanAllTaskAPI().then( res => console.log(res.data.result))
+      this.initialTodoList();
     }
 
   }
